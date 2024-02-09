@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.container {
+  max-width: 1280px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+body {
+    height: 100vh;
+    display: flex;
+    font-family: sans-serif;
+    justify-content: center;
+    align-items: center;
+  animation: animateBg 5s linear infinite;
+  background-image: linear-gradient(
+    0deg,
+    #0000ff,
+    #ff00ff,
+    #7d11a2,
+    #0000ff,
+    #ff00ff
+  );
+  background-size: 100% 400%;
+}
+@keyframes animateBg {
+  0% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}

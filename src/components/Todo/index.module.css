@@ -1,0 +1,63 @@
+.wrapper{
+    width: 45vw;
+    border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+}
+.todoTitle{
+    padding: 10px 0px 5px 10px;
+    color: white;
+    font-size: 30px;
+}
+.formWrapper{
+    display: flex;
+    padding:10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.formWrapper input{
+    padding: 12px;
+    width: 80%;
+    outline: none;
+    border:2px solid white;
+    background-color:transparent;
+    color:white;
+    font-size: 16px;
+} 
+.formWrapper input::placeholder{
+    color:white;
+}
+.formWrapper > button{
+    border: 2px solid white;
+    color:black;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bolder;
+    width: 20%;
+    cursor: pointer;
+}
+.todoCards{
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    padding: 0px 10px 10px 10px;
+}
+.todoCard{
+    padding: 7px 5px;
+    display: flex;
+    align-items: center;
+    color:white;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 700;
+    border:2px solid white;
+}
+
+.inputAndText{
+    gap: 5px;
+    display: flex;
+}
+.todoCard svg{
+    cursor: pointer;
+    margin-right: 5px;
+} 
