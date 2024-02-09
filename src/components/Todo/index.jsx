@@ -8,6 +8,8 @@ export default function Todo() {
   const [data, setData] = useState([]);
   const [done, setDone] = useState(0);
   const [update, setUpdate] = useState(false);
+  const [updateId, setUpdateId] = useState(0);
+
   useEffect(() => {
     if (localStorage.getItem("todos")) {
       let local = JSON.parse(localStorage.getItem("todos"));
@@ -25,20 +27,24 @@ export default function Todo() {
     setData(copy);
   }
 
-  function handleUpdate(elId) {
+  function handleUpdate() {
+    setUpdate(!update);
+  }
+  function handleUpdateSave() {
     let copy = JSON.parse(JSON.stringify(data));
-    if (true) {
-      setUpdate(!update);
+    if(validate(updateRef)){
       copy = copy.map((el) => {
-        if (el.id == elId) {
+        if (el.id == updateId) {
           el.name = updateRef.current.value;
         }
         return el;
       });
+      setUpdate(!update);
     }
     setData(copy);
     LocalStorageSet(copy);
   }
+
   function handleUpdateModal() {
     setUpdate(!update);
   }
@@ -51,8 +57,7 @@ export default function Todo() {
           el.status = "checked";
           setDone(done + 1);
         } else {
-          setDone(done - 1);
-
+          setDone( done - 1);
           el.status = "unchecked";
         }
       }
@@ -96,6 +101,30 @@ export default function Todo() {
         {data.map((el, index) => {
           return (
             <div key={index} className={style.todoCard}>
+              <div style={{ display: update ? "block" : "none" }}>
+                <div className={style.modalCard}>
+                  <div className={style.buttonWrapper}>
+                    <input
+                      ref={updateRef}
+                      className={style.modalInput}
+                      type="text"
+                    />
+                    <button
+                      onClick={() => {
+                        handleUpdateSave();
+                      }}
+                      className={style.agree}
+                    >
+                      Update
+                    </button>
+                  </div>
+                </div>
+                <div
+                  onClick={handleUpdateModal}
+                  className={style.modalBackground}
+                ></div>
+              </div>
+
               <div className={style.inputAndText}>
                 <input
                   type="checkbox"
@@ -118,6 +147,8 @@ export default function Todo() {
                 <svg
                   onClick={() => {
                     handleUpdate();
+                    setUpdateId(el.id);
+                    updateRef.current.value = el.name;
                   }}
                   fill="white"
                   width="30px"
@@ -173,29 +204,6 @@ export default function Todo() {
                   </g>
                 </svg>
               </div>
-              {update && (
-                <>
-                  <div className={style.modalCard}>
-                    <form
-                      onSubmit={() => {
-                        handleUpdate(el.id);
-                      }}
-                      className={style.buttonWrapper}
-                    >
-                      <input
-                        ref={updateRef}
-                        className={style.modalInput}
-                        type="text"
-                      />
-                      <button className={style.agree}>Update</button>
-                    </form>
-                  </div>
-                  <div
-                    onClick={handleUpdateModal}
-                    className={style.modalBackground}
-                  ></div>
-                </>
-              )}
             </div>
           );
         })}
