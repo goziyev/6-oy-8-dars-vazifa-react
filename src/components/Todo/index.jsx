@@ -4,8 +4,10 @@ import { validate, LocalStorageSet } from "./functions";
 
 export default function Todo() {
   const inputRef = useRef();
+  const updateRef = useRef();
   const [data, setData] = useState([]);
-
+  const [done, setDone] = useState(0);
+  const [update, setUpdate] = useState(false);
   useEffect(() => {
     if (localStorage.getItem("todos")) {
       let local = JSON.parse(localStorage.getItem("todos"));
@@ -15,12 +17,30 @@ export default function Todo() {
 
   function handleDelete(elId) {
     let copy = JSON.parse(JSON.stringify(data));
-    let a = confirm(`Rostdan ham o'chirishni istaysizmi ?`)
-    if(a){
-      copy = copy.filter((el) => el.id != elId)
+    let a = confirm(`Rostdan ham o'chirishni istaysizmi ?`);
+    if (a) {
+      copy = copy.filter((el) => el.id != elId);
     }
     LocalStorageSet(copy);
     setData(copy);
+  }
+
+  function handleUpdate(elId) {
+    let copy = JSON.parse(JSON.stringify(data));
+    if (true) {
+      setUpdate(!update);
+      copy = copy.map((el) => {
+        if (el.id == elId) {
+          el.name = updateRef.current.value;
+        }
+        return el;
+      });
+    }
+    setData(copy);
+    LocalStorageSet(copy);
+  }
+  function handleUpdateModal() {
+    setUpdate(!update);
   }
 
   function handleCheckbox(e, todo) {
@@ -29,7 +49,10 @@ export default function Todo() {
       if (el.id == todo.id) {
         if (e.target.checked) {
           el.status = "checked";
+          setDone(done + 1);
         } else {
+          setDone(done - 1);
+
           el.status = "unchecked";
         }
       }
@@ -57,7 +80,9 @@ export default function Todo() {
 
   return (
     <div className={style.wrapper}>
-      <h2 className={style.todoTitle}>Todos ({data.length})</h2>
+      <h2 className={style.todoTitle}>
+        Rejalar ({data.length}) Bajarildi ({done})
+      </h2>
       <form className={style.formWrapper} onSubmit={handleSubmit}>
         <input
           type="text"
@@ -91,6 +116,9 @@ export default function Todo() {
               </div>
               <div>
                 <svg
+                  onClick={() => {
+                    handleUpdate();
+                  }}
                   fill="white"
                   width="30px"
                   height="30px"
@@ -145,6 +173,29 @@ export default function Todo() {
                   </g>
                 </svg>
               </div>
+              {update && (
+                <>
+                  <div className={style.modalCard}>
+                    <form
+                      onSubmit={() => {
+                        handleUpdate(el.id);
+                      }}
+                      className={style.buttonWrapper}
+                    >
+                      <input
+                        ref={updateRef}
+                        className={style.modalInput}
+                        type="text"
+                      />
+                      <button className={style.agree}>Update</button>
+                    </form>
+                  </div>
+                  <div
+                    onClick={handleUpdateModal}
+                    className={style.modalBackground}
+                  ></div>
+                </>
+              )}
             </div>
           );
         })}

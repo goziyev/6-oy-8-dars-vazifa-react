@@ -9,6 +9,8 @@ function validate(inputRef) {
   }
   return true;
 }
+
+
 function LocalStorageSet(data){
     localStorage.setItem('todos',JSON.stringify(data))
 }
